@@ -1,0 +1,70 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>SyncPad Viewer</title>
+  <style>
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+    body { background: #111; overflow: hidden; }
+    canvas { display: block; }
+  </style>
+</head>
+<body>
+  <canvas id="strokes"></canvas>
+  <script>
+    const canvas = document.getElementById('strokes')
+    const ctx = canvas.getContext('2d')
+
+    canvas.width = window.innerWidth
+    canvas.height = window.innerHeight
+
+    ctx.fillStyle = '#1A1A1A'
+    ctx.fillRect(0, 0, canvas.width, canvas.height)
+
+    const strokes = {}
+
+    function handleMessage(msg) {
+      const data = JSON.parse(msg)
+      if (data.type !== 'stroke') return
+
+      if (data.phase === 'start') {
+        strokes[data.strokeId] = {
+          color: data.color,
+          brushSize: data.brushSize
+        }
+        ctx.beginPath()
+        ctx.moveTo(data.x, data.y)
+        ctx.strokeStyle = data.color
+        ctx.lineWidth = data.brushSize
+        ctx.lineCap = 'round'
+        ctx.lineJoin = 'round'
+      }
+
+      if (data.phase === 'move') {
+        const stroke = strokes[data.strokeId]
+        if (!stroke) return
+        ctx.strokeStyle = stroke.color
+        ctx.lineWidth = stroke.brushSize
+        ctx.lineCap = 'round'
+        ctx.lineJoin = 'round'
+        ctx.lineTo(data.x, data.y)
+        ctx.stroke()
+        ctx.beginPath()
+        ctx.moveTo(data.x, data.y)
+      }
+
+      if (data.phase === 'end') {
+        delete strokes[data.strokeId]
+      }
+    }
+
+    const ws = new WebSocket(`ws://${location.host}`)
+    const status = document.createElement('div')
+    status.style.cssText = 'position:fixed;top:10px;right:10px;color:#666;font:12px monospace'
+    document.body.appendChild(status)
+
+    ws.onopen = () => status.textContent = '● connected'
+    ws.onclose = () => status.textContent = '○ disconnected'
+    ws.onmessage = (e) => handleMessage(e.data)
+  </script>
+</body>
+</html>

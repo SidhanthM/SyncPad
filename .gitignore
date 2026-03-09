@@ -1,0 +1,18 @@
+# Android
+android/.gradle/
+android/local.properties
+android/build/
+android/app/build/
+android/.idea/
+android/**/*.iml
+
+# Node
+server/node_modules/
+server/data/
+
+# Mac
+.DS_Store
+
+# Sensitive
+*.key
+*.keystore
