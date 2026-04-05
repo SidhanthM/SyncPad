@@ -1,0 +1,84 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>SyncPad</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <div id="toolbar">
+        <div class="tool-group">
+            <button id="tool-pen" class="active">Pen</button>
+            <button id="tool-eraser">Eraser</button>
+        </div>
+        <div class="divider"></div>
+        <div class="tool-group">
+            <div id="color-presets">
+                <button class="color-swatch active" style="background-color: #000000;" data-color="0xFF000000"></button>
+                <button class="color-swatch" style="background-color: #FF0000;" data-color="0xFF0000FF"></button>
+                <button class="color-swatch" style="background-color: #00FF00;" data-color="0xFF00FF00"></button>
+                <button class="color-swatch" style="background-color: #0000FF;" data-color="0xFFFF0000"></button>
+            </div>
+        </div>
+        <div class="divider"></div>
+        <div class="tool-group">
+            <input type="range" id="size-slider" min="0.5" max="10" step="0.5" value="2.0">
+            <span id="size-value">2.0mm</span>
+        </div>
+        <div class="divider"></div>
+        <div class="tool-group">
+            <label for="smoothing-slider">Smoothing</label>
+            <input type="range" id="smoothing-slider" min="0.1" max="2" step="0.05" value="0.85">
+            <output id="smoothing-value">0.85</output>
+        </div>
+        <div class="divider"></div>
+        <div class="tool-group">
+            <input type="checkbox" id="adaptive-stroke" checked>
+            <label for="adaptive-stroke">Adaptive</label>
+        </div>
+        <div class="divider"></div>
+        <div class="tool-group">
+            <button id="undo-btn">Undo</button>
+            <button id="redo-btn">Redo</button>
+        </div>
+        <div class="divider"></div>
+        <div class="tool-group">
+            <button id="prev-page">Prev</button>
+            <span id="page-display">Page 1</span>
+            <button id="next-page">Next</button>
+            <button id="add-page">+</button>
+        </div>
+    </div>
+    <details id="pressure-panel">
+        <summary>Pressure Settings</summary>
+        <div class="pressure-controls">
+            <div class="pressure-row">
+                <label for="pressure-low">Pressure Low</label>
+                <input type="range" id="pressure-low" min="0" max="1" step="0.1" value="0">
+                <output id="pressure-low-output">0</output>
+            </div>
+            <div class="pressure-row">
+                <label for="pressure-high">Pressure High</label>
+                <input type="range" id="pressure-high" min="1" max="10" step="0.1" value="2">
+                <output id="pressure-high-output">2</output>
+            </div>
+            <div class="pressure-row">
+                <label for="pressure-smoothing">Pressure Smoothing</label>
+                <input type="range" id="pressure-smoothing" min="0.01" max="1" step="0.01" value="0.3">
+                <output id="pressure-smoothing-output">0.3</output>
+            </div>
+        </div>
+    </details>
+    <div id="viewport-container">
+        <canvas id="canvas"></canvas>
+        <div id="viewport-box">
+            <div class="resize-handle nw"></div>
+            <div class="resize-handle ne"></div>
+            <div class="resize-handle sw"></div>
+            <div class="resize-handle se"></div>
+        </div>
+    </div>
+    <script type="module" src="main.js"></script>
+</body>
+</html>
